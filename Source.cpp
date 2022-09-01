@@ -2,9 +2,9 @@
 #include<random>
 #include<ctime>
 
-sf::Vector2f transform(sf::Image& image, sf::Vector2f pos) {
+sf::Vector2f transform(sf::Image& image, sf::Color color, sf::Vector2f pos) {
     sf::Vector2f temp;
-	float r = (rand() % 100);
+	int r = (rand() % 100);
     if (r < 1)
         temp = sf::Vector2f(0, 0.16 * pos.y);
     else if (r < 89)
@@ -13,8 +13,12 @@ sf::Vector2f transform(sf::Image& image, sf::Vector2f pos) {
         temp = sf::Vector2f(0.20 * pos.x - 0.26 * pos.y, 0.23 * pos.x + 0.22 * pos.y - 1.60);
     else
         temp = sf::Vector2f(-0.15 * pos.x + 0.28 * pos.y, 0.26 * pos.x + 0.24 * pos.y - 0.44);
-    image.setPixel(int((temp.x * 108) + 1080), int((temp.y * 108) + 1080), sf::Color::Green);
+    image.setPixel(int((temp.x * 108) + 1080), int((temp.y * 108) + 1080), color);
     return temp;
+}
+
+sf::Color rc() {
+    return sf::Color((rand() % 256), (rand() % 256), (rand() % 256));
 }
 
 int main() {
@@ -33,6 +37,8 @@ int main() {
 	sf::Vector2f pos(0, 0);
     sf::Vector2f scaled;
 
+    sf::Color color;
+
     while (window.isOpen()) {
         while (window.pollEvent(event))
         {
@@ -45,10 +51,13 @@ int main() {
 
         }
 
+        //color = rc();
+        color = sf::Color::Green;
+
         window.clear(bgColor);
 
-		for (int i = 0; i < 100000; i++) {
-			pos = transform(image, pos);
+		for (int i = 0; i < 10000000; i++) {
+			pos = transform(image, color, pos);
 		}
 
 		texture.loadFromImage(image);
